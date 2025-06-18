@@ -10,7 +10,7 @@ model_path = 'model.pkl'
 model = joblib.load(model_path)
 
 # Load dataset final
-data_path = 'dataset_app.csv'
+data_path = 'dataset.csv'
 df = pd.read_csv(data_path)
 
 # Pisahkan fitur dan target
