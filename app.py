@@ -42,6 +42,23 @@ accuracy = correct / total
 
 st.success(f"🎯 Akurasi prediksi terhadap dataset: {accuracy:.2%} ({correct} dari {total} benar)")
 
-# Download hasil
-csv = df_result.to_csv(index=False).encode('utf-8')
-st.download_button("💾 Unduh Hasil Klasifikasi CSV", data=csv, file_name="hasil_klasifikasi.csv", mime="text/csv")
+st.subheader("🔍 Prediksi Individu dari Status Enrolled")
+
+# Filter data enrolled
+enrolled_data = df[df['Status'] == 1].reset_index(drop=True)
+
+# Tampilkan selectbox untuk memilih baris
+selected_index = st.selectbox("Pilih Mahasiswa (baris) dengan Status Enrolled", enrolled_data.index)
+
+# Ambil baris yang dipilih
+selected_row = enrolled_data.loc[selected_index]
+selected_features = selected_row.drop('Status').values.reshape(1, -1)
+
+# Jalankan prediksi
+predicted_label = model.predict(selected_features)[0]
+label_map = {0: 'Dropout', 1: 'Enrolled', 2: 'Graduate'}
+
+# Tampilkan hasil
+st.write("### Hasil Prediksi:")
+st.write(f"Status Saat Ini: **Enrolled**")
+st.write(f"Prediksi Kemungkinan: **{label_map[predicted_label]}**")
