@@ -11,7 +11,7 @@ model = joblib.load(model_path)
 
 # Load dataset final
 data_path = 'dataset.csv'
-df = pd.read_csv(data_path)
+df = pd.read_csv(data_path, sep=';')
 
 # Tampilkan dataset
 st.subheader("Dataset")
