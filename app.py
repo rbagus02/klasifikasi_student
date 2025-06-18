@@ -19,7 +19,7 @@ st.subheader("Dataset")
 st.dataframe(df.head())
 
 # Filter data yang berstatus Enrolled
-df_enrolled = df[df['Status'] == 1]
+df_enrolled = df[df['Status'] == 'Enrolled']
 
 st.subheader("🎲 Tampilkan Satu Baris Mahasiswa Berstatus Enrolled (Acak)")
 
