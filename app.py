@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import random
 
 # Judul Aplikasi
 st.title("Prediksi Status Mahasiswa - Dashboard Klasifikasi")
@@ -17,9 +18,13 @@ df = pd.read_csv(data_path, sep=';')
 st.subheader("Dataset")
 st.dataframe(df.head())
 
-st.subheader("🎯 Tampilkan Data Mahasiswa dengan Status Enrolled")
+# Filter data yang berstatus Enrolled
+df_enrolled = df[df['Status'] == 1]
 
-# Tombol untuk memunculkan data dengan Status = 1 (Enrolled)
-if st.button("Tampilkan Mahasiswa Enrolled"):
-    enrolled_df = df[df['Status'] == 1].reset_index(drop=True)
-    st.dataframe(enrolled_df.head(20))  # Tampilkan 20 baris pertama
+st.subheader("🎲 Tampilkan Satu Baris Mahasiswa Berstatus Enrolled (Acak)")
+
+# Tombol untuk menampilkan satu baris acak
+if st.button("Ambil 1 Mahasiswa Enrolled Secara Acak"):
+    random_row = df_enrolled.sample(n=1, random_state=random.randint(0, 1000)).reset_index(drop=True)
+    st.write("### 📋 Data Mahasiswa Terpilih:")
+    st.dataframe(random_row)
