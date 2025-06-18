@@ -6,7 +6,7 @@ import joblib
 st.title("Prediksi Status Mahasiswa - Dashboard Klasifikasi")
 
 # Load model dari file
-model_path = 'model/model.pkl'
+model_path = 'model.pkl'
 model = joblib.load(model_path)
 
 # Load dataset final
