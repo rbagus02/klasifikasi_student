@@ -25,6 +25,9 @@ st.subheader("🎲 Tampilkan Satu Baris Mahasiswa Berstatus Enrolled (Acak)")
 
 # Tombol untuk menampilkan satu baris acak
 if st.button("Ambil 1 Mahasiswa Enrolled Secara Acak"):
-    random_row = df_enrolled.sample(n=1, random_state=random.randint(0, 1000)).reset_index(drop=True)
-    st.write("### 📋 Data Mahasiswa Terpilih:")
-    st.dataframe(random_row)
+    if not df_enrolled.empty:
+        random_row = df_enrolled.sample(n=1, random_state=random.randint(0, 1000)).reset_index(drop=True)
+        st.write("### Data Mahasiswa Terpilih:")
+        st.dataframe(random_row)
+    else:
+        st.warning("Tidak ada data mahasiswa dengan status Enrolled (Status == 1) di dataset.")
