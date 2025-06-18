@@ -20,7 +20,7 @@ st.dataframe(df.head())
 
 from sklearn.preprocessing import MinMaxScaler
 
-# Fitur yang digunakan (pastikan sesuai model)
+# Daftar fitur dari dataset mentah
 selected_features = [
     'Curricular_units_2nd_sem_approved',
     'Curricular_units_2nd_sem_grade',
@@ -34,38 +34,41 @@ selected_features = [
     'Debtor',
     'Gender',
     'Age_at_enrollment',
-    'Status'  # Status masih string
+    'Status'  # status masih string
 ]
 
-# Fitur numerik saja untuk normalisasi
 fit_features = [f for f in selected_features if f != 'Status']
 
-# Filter hanya mahasiswa berstatus Enrolled
+# Filter hanya baris Enrolled
 df_enrolled = df[df['Status'] == 'Enrolled']
 
 st.subheader("🎲 Klasifikasi Mahasiswa Enrolled (Acak)")
 
 if st.button("Ambil & Klasifikasi Mahasiswa Enrolled Acak"):
     if not df_enrolled.empty:
-        # Ambil satu baris acak
         random_row = df_enrolled.sample(n=1, random_state=random.randint(0, 1000)).reset_index(drop=True)
+        row_for_model = random_row[selected_features]
 
-        # Normalisasi fitur
+        # Normalisasi fitur numerik (tanpa Status)
         scaler = MinMaxScaler()
         scaler.fit(df[fit_features])
-        row_normalized = scaler.transform(random_row[fit_features])
+        row_normalized = scaler.transform(row_for_model[fit_features])
 
         # Prediksi
         prediction = model.predict(row_normalized)[0]
+        label_map = {0: 'Dropout', 1: 'Graduate'}
+        pred_label = label_map.get(prediction, 'Tidak diketahui')
 
-        # Tampilkan
-        st.write("### 📋 Data Mahasiswa Terpilih:")
+        # Status asli dari dataset mentah
+        status_asli = random_row['Status'].values[0]
+
+        st.write("### 📋 Data Mahasiswa:")
         st.dataframe(random_row)
 
         st.markdown(f"""
         ### 🧾 Ringkasan:
-        - **Status Asli**: Enrolled  
-        - **Prediksi Model (angka)**: {prediction}
+        - **Status Asli**: {status_asli}  
+        - **Prediksi Model**: {pred_label}
         """)
     else:
-        st.warning("⚠️ Tidak ada data dengan Status = 'Enrolled'.")
+        st.warning("⚠️ Tidak ada data mahasiswa dengan Status = 'Enrolled'.")
