@@ -38,7 +38,7 @@ selected_features = [
 ]
 
 # Filter data berstatus Enrolled
-df_enrolled = df[df['Status'] == 1]
+df_enrolled = df[df['Status'] == 'Enrolled']
 
 st.subheader("Klasifikasi Mahasiswa Enrolled (Acak)")
 
